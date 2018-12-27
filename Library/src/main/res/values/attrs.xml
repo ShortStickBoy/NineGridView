@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="NineGridView">
+        <attr name="nine_grid_view_w_ratio" format="integer" />
+        <attr name="nine_grid_view_h_ratio" format="integer" />
+        <attr name="nine_grid_view_x_space" format="integer" />
+    </declare-styleable>
+
+</resources>

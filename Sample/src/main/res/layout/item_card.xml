@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.sunzn.nine.library.NineGridView
+        android:id="@+id/image"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:nine_grid_view_h_ratio="390"
+        app:nine_grid_view_w_ratio="692"
+        app:nine_grid_view_x_space="4" />
+
+</android.support.constraint.ConstraintLayout>
