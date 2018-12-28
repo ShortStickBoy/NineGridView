@@ -19,6 +19,7 @@ public class NineGridView<A extends NineGridView.NineGridAdapter> extends ViewGr
     private int mChildHeight;
 
     private A mAdapter;
+    private boolean mXClick;
     private int mWRatio, mHRatio, mUSpace;
     private OnImageClickListener mListener;
     private WeakReferencePool<View> IMAGE_POOL;
@@ -41,6 +42,7 @@ public class NineGridView<A extends NineGridView.NineGridAdapter> extends ViewGr
         mWRatio = attributes.getInt(R.styleable.NineGridView_nine_grid_view_w_ratio, 1);
         mHRatio = attributes.getInt(R.styleable.NineGridView_nine_grid_view_h_ratio, 1);
         mUSpace = attributes.getInt(R.styleable.NineGridView_nine_grid_view_x_space, 4);
+        mXClick = attributes.getBoolean(R.styleable.NineGridView_nine_grid_view_x_click, true);
         attributes.recycle();
         initView();
     }
@@ -185,11 +187,13 @@ public class NineGridView<A extends NineGridView.NineGridAdapter> extends ViewGr
             int bottom = top + mChildHeight;
             view.layout(left, top, right, bottom);
             final int position = i;
-            view.setOnClickListener(v -> {
-                if (mListener != null) {
-                    mListener.onImageClick(position, view);
-                }
-            });
+            if (mXClick) {
+                view.setOnClickListener(v -> {
+                    if (mListener != null) {
+                        mListener.onImageClick(position, view);
+                    }
+                });
+            }
         }
     }
 
