@@ -1,10 +1,8 @@
 package com.sunzn.nine.library;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
-import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -12,7 +10,7 @@ import android.widget.ImageView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NineGridView<T extends NineGridView.NineGridAdapter> extends ViewGroup implements ViewGroup.OnHierarchyChangeListener {
+public class NineGridView<A extends NineGridView.NineGridAdapter> extends ViewGroup implements ViewGroup.OnHierarchyChangeListener {
 
     private int mRows;
     private int mSpace;
@@ -20,10 +18,18 @@ public class NineGridView<T extends NineGridView.NineGridAdapter> extends ViewGr
     private int mChildWidth;
     private int mChildHeight;
 
-    private T mAdapter;
+    private A mAdapter;
     private int mWRatio, mHRatio, mUSpace;
     private OnImageClickListener mListener;
     private WeakReferencePool<View> IMAGE_POOL;
+
+    public interface NineGridAdapter<I> {
+        int getCount();
+
+        I getItem(int position);
+
+        View getView(NineGridView parent, int position, View itemView);
+    }
 
     public NineGridView(Context context) {
         this(context, null);
@@ -41,16 +47,16 @@ public class NineGridView<T extends NineGridView.NineGridAdapter> extends ViewGr
 
     private void initView() {
         setOnHierarchyChangeListener(this);
-        IMAGE_POOL = new WeakReferencePool<>(5);
-        mSpace = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, mUSpace, Resources.getSystem().getDisplayMetrics());
+        mSpace = SizeHelper.dp2px(mUSpace);
+        IMAGE_POOL = new WeakReferencePool<>(10);
     }
 
-    public void setAdapter(T adapter) {
+    public void setAdapter(A adapter) {
         mAdapter = adapter;
         notifyDataSetChanged();
     }
 
-    public T getAdapter() {
+    public A getAdapter() {
         return mAdapter;
     }
 
@@ -94,7 +100,7 @@ public class NineGridView<T extends NineGridView.NineGridAdapter> extends ViewGr
         }
     }
 
-    private void addChildrenData(NineGridAdapter adapter) {
+    private void addChildrenData(A adapter) {
         int childCount = getChildCount();
         int count = adapter.getCount();
         for (int i = 0; i < count; i++) {
@@ -171,7 +177,6 @@ public class NineGridView<T extends NineGridView.NineGridAdapter> extends ViewGr
         final int childCount = getChildCount();
         for (int i = 0; i < childCount; i++) {
             ImageView view = (ImageView) getChildAt(i);
-
             int row = i / mColumns;
             int col = i % mColumns;
             int left = (mChildWidth + mSpace) * col + getPaddingLeft();
@@ -209,14 +214,6 @@ public class NineGridView<T extends NineGridView.NineGridAdapter> extends ViewGr
     @Override
     public void onChildViewRemoved(View parent, View child) {
         IMAGE_POOL.put(child);
-    }
-
-    public interface NineGridAdapter<T> {
-        int getCount();
-
-        T getItem(int position);
-
-        View getView(NineGridView parent, int position, View itemView);
     }
 
     public interface OnImageClickListener {
