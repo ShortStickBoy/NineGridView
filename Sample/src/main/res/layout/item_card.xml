@@ -12,6 +12,7 @@
         android:paddingEnd="10dp"
         app:nine_grid_view_h_ratio="390"
         app:nine_grid_view_w_ratio="692"
+        app:nine_grid_view_x_click="false"
         app:nine_grid_view_x_space="4" />
 
 </android.support.constraint.ConstraintLayout>
